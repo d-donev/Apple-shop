@@ -1,0 +1,130 @@
+﻿body {
+    background-image: url('../Images/wall2.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+#welcome {
+    color: burlywood;
+    margin-left: -20px;
+}
+
+#meni {
+    background-image: linear-gradient(to right, rgba(205,4,36,100), rgba(2,10,63,100));
+    color: red;
+}
+
+.tab {
+    color: #bebeba;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 20px;
+    padding-top: 15px;
+    left: -80px;
+}
+
+#tabb {
+    color: #bebeba;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 30px;
+    left: -140px;
+    padding-left: -50px;
+}
+
+#container {
+    margin-top: 50px;
+    margin-left: 80px;
+}
+
+#phones {
+    display: inline-block;
+    margin-right: 40px;
+}
+
+#mac {
+    display: inline-block;
+    margin-left: 290px;
+}
+
+.sliki {
+    width: 300px;
+    height: 250px;
+    margin-left: 20px;
+    margin-top: -15px;
+}
+
+.naslov {
+    color: whitesmoke;
+}
+
+    .naslov:hover {
+        color: burlywood;
+    }
+
+.para {
+    color: white;
+    font-size: 14px;
+    margin-left: 10px;
+    margin-top: 10px
+}
+
+.foo {
+    width: 30px;
+    height: 32px;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.foo1 {
+    width: 25px;
+    height: 25px;
+    display: inline-block;
+    margin-right: 7px;
+}
+
+.foo2 {
+    width: 30px;
+    height: 32px;
+    display: inline-block;
+}
+
+.tekst {
+    display: inline-block;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+}
+
+.tekst1 {
+    display: inline-block;
+    font-size: 20px;
+    font-weight: bold;
+    margin-left: 740px;
+    padding-right: 10px;
+    color: white;
+}
+
+.reg {
+    color: burlywood;
+}
+
+.gray {
+    color: darkgray;
+}
+
+#padTable_info {
+    color: white;
+}
+
+label {
+    color: white;
+}
+
+.decor {
+    text-decoration: none;
+}
+
+.pad {
+    padding-left: 30px;
+    color: white;
+    font-size: 18px;
+}

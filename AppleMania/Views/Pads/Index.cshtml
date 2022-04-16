@@ -1,0 +1,99 @@
+﻿@model IEnumerable<AppleMania.Models.Pad>
+
+@{
+    ViewBag.Title = "Index";
+}
+<link href="~/Content/pads.css" rel="stylesheet" />
+<h2 style="color:white;">Pads</h2>
+
+<p>
+    @if (User.IsInRole("editor") || User.IsInRole("admin"))
+    {
+        <button type="submit" class="btn btn-default">@Html.ActionLink("Create New", "Create", new { style = "text-decoration:none;" })</button>
+    }
+
+    </p>
+<table id="padTable" class="table">
+    <thead>
+        <tr style="color:aqua;font-size:17px;">
+            <th style="color:antiquewhite;">
+                @Html.DisplayNameFor(model => model.Model)
+            </th>
+            <th style="color:antiquewhite;">
+                @Html.DisplayNameFor(model => model.ImageURL)
+            </th>
+            <th style="color:antiquewhite;">
+                @Html.DisplayNameFor(model => model.ReleaseDate)
+            </th>
+            <th style="color:antiquewhite;">
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr style="color:white;">
+                <td style="color:white;font-size:15px;font-weight:bold;">
+                    @Html.DisplayFor(modelItem => item.Model)
+                </td>
+                <td style="color:white;">
+                    <img src="@item.ImageURL" alt="Alternate Text" style="width:80px;height:100px;" />
+                </td>
+                <td style="color:white;font-weight:bold;">
+                    @Html.DisplayFor(modelItem => item.ReleaseDate)
+                </td>
+                <td style="color: limegreen; font-weight: bold; font-size: 20px; ">
+                    @Html.DisplayFor(modelItem => item.Price) €
+                </td>
+                <td>
+                    @if (User.IsInRole("editor") || User.IsInRole("admin"))
+                    {
+                        <button type="submit" style="background-color:Highlight;" class="btn btn-default">@Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { style = "text-decoration:none;color:white;font-weight:bold;" })</button>
+                    }
+                    <button type="submit" style="background-color:orange;" class="btn btn-default">@Html.ActionLink("Details", "Details", new { id = item.Id }, new { style = "text-decoration:none;color:white;font-weight:bold;" })</button>
+
+                    @if (User.IsInRole("admin"))
+                    {
+                        <button type="submit" style="background-color:red;" data-pad-id="@item.Id" class="btn btn-default js-delete"><a href="#" style="text-decoration: none; color: white; font-weight: bold;">Delete</a></button>
+                    }
+                    <button type="submit" style="background-color:green;" class="btn btn-default"><a href="~/Account/AddToCart/@item.Id" style="text-decoration: none; color: white; font-weight: bold;">Add to cart</a></button>
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+
+@section scripts {
+
+    <script>
+
+        $(document).ready(function () {
+            var table = $("#padTable").DataTable();
+
+            $("#padTable .js-delete").on("click", function () {
+
+                var btn = $(this);
+                bootbox.confirm("Do you want to delete this item ?", function (res) {
+
+                    if (res) {
+                        $.ajax({
+                            url: "/api/ApiPads/" + btn.attr("data-pad-id"),
+                            method: "DELETE",
+                            success: function () {
+                                table.row(btn.parents("tr")).remove().draw();
+                            }
+                        })
+                    }
+
+                })
+
+            })
+        })
+
+    </script>
+
+}

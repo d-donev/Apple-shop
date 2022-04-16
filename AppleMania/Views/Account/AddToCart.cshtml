@@ -1,0 +1,19 @@
+﻿@model AppleMania.Models.PhoneForUser
+
+@{
+    ViewBag.Title = "AddToCart";
+}
+<link href="~/Content/phones.css" rel="stylesheet" />
+
+@using (Html.BeginForm("AddToCart", "Account", FormMethod.Post))
+{
+    @Html.HiddenFor(m => m.Id) /**/
+    @Html.HiddenFor(m => m.UserId)
+
+    <h2 style="color:white;">Are you sure you want to add @Model.PhoneName to your cart ?</h2>
+
+    <button type="submit" class="btn btn-default" style="color:royalblue">Add</button>
+    <button type="submit" class="btn btn-default"><a href="~/Phones/Index/" style="text-decoration:none;color:royalblue">Cancel</a></button>
+
+
+}

@@ -1,0 +1,140 @@
+﻿@model AppleMania.Models.ApplicationUser
+
+@{
+    ViewBag.Title = "ShowAllPhones";
+}
+
+
+<link href="~/Content/phones.css" rel="stylesheet" />
+
+<link href="~/jquery/jquery-ui.css" rel="stylesheet" />
+<script src="~/jquery/jquery.js"></script>
+<script src="~/jquery/jquery-ui.js"></script>
+
+<h2 style="color:white">Shopping Cart</h2>
+<div>
+    <h4 style="color:white">
+        Total:
+        <span id="total">0</span>
+        <span><button id="btn" class="btn-default" style="background-color:lawngreen;margin-left:15px;">BUY</button></span>
+    </h4>
+
+</div>
+
+<table class="table" id="tabela">
+    <thead style="color:white">
+        <tr style="color:white">
+            <td style="font-size:18px;color:white;">
+                Phone Model:
+            </td>
+            <td style="color:white;font-size:18px;">
+                Image
+            </td>
+            <td style="color:white;font-size:18px;">
+                Price
+            </td>
+            <td style="color:white"></td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var l in Model.Phones)
+        {
+            <tr style="color:white">
+                <td style="color:white;font-size:25px;font-weight:bold;">@l.Model</td>
+                <td style="color:white"><img src="@l.ImageURL" style="width:80px;height:100px;" alt="Alternate Text" /></td>
+                <td class="cena" style="color:white;font-size:25px;font-weight:bold;color:lime">@l.Price €</td> 
+                <td style="color:white">
+                    <button type="submit" style="background-color:green;" class="btn btn-default"><a href="~/Phones/Details/@l.Id" style="text-decoration:none;color:white;font-weight:bold;">More Info</a></button>
+                    <button type="submit" style="background-color:red;" data-phone-id="@l.Id" class="btn btn-default js-delete"><a href="#" style="text-decoration:none;color:white;font-weight:bold;">Delete</a></button>
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+<button type="submit" class="btn btn-default"><a href="~/Phones/Index/" style="text-decoration:none;">Back</a></button>
+
+<div id="dialog">
+    <p>Name</p>
+    <input type="text" />
+    <p>Surname</p>
+    <input type="text" />
+    <p>Card Number</p>
+    <input type="text" />
+</div>
+
+
+@section scripts{
+    <script>
+        var table = $("#tabela").DataTable();
+        $("#tabela .js-delete").click(function () {
+            var button = $(this);
+            bootbox.confirm("Are you sure you want to delete this item ?",
+                function (result) {
+                    if (result) {
+                        $.ajax({
+                            method: "GET",
+                            url: "/Account/Delete/" + button.attr("data-phone-id"),
+                            success: function () {
+                                table.row(button.parents("tr")).remove().draw();
+                                getPrice();
+                            }
+                        });
+                    }
+                });
+        });
+
+        function getPrice() {
+            var btn = document.getElementById("btn");
+            var ceni = document.getElementsByClassName("cena");
+            var brEl = ceni.length;
+            var vkupno = 0;
+
+            for (var i = 0; i < brEl; i++) {
+                vkupno += parseInt(ceni[i].innerHTML);
+            }
+
+            document.getElementById("total").innerHTML = vkupno;
+        }
+
+        //table.row(button.parents("tr")).remove().draw();
+
+        function deleteItems() {
+            var ceni = document.getElementsByClassName("cena");
+            var brEl = ceni.length;
+            for (var i = 0; i < brEl; i++) {
+                document.getElementById("tabela").deleteRow(0);
+            }
+        }
+
+        $(document).ready(function () {
+            getPrice();
+            $("#dialog").hide();
+
+
+            $("#dialog").dialog({
+                autoOpen: false,
+                modal: true,
+                buttons: {
+                    Confirm: function () {
+                        deleteItems();
+                        $("input").val("");
+                    },
+                    Cancel: function () {
+                        $("#dialog").dialog("close");
+                        $("input").val("");
+                    }
+                }
+            })
+
+            $("#btn").click(function () {
+                $("#dialog").dialog("open")
+            })
+
+        })
+
+
+
+    </script>
+
+}

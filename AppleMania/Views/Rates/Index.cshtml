@@ -1,0 +1,105 @@
+﻿@model IEnumerable<AppleMania.Models.Rate>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<link href="~/Content/phones.css" rel="stylesheet" />
+
+<h2 style="color:white;font-size:40px">
+    Rate Us
+    <a href="/Rates/Create"><img style="width:50px;height:50px;filter: invert(100%) sepia(1%) saturate(434%) hue-rotate(303deg) brightness(120%) contrast(100%);" src="~/Images/add-button.svg" /></a>
+
+</h2>
+<table id="rateTable" class="table">
+    <thead>
+        <tr style="color:aqua;font-size:17px;">
+            <th style="color:antiquewhite;">
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th style="color:antiquewhite;">
+                @Html.DisplayNameFor(model => model.User)
+            </th>
+            <th style="color:antiquewhite;">
+                @Html.DisplayNameFor(model => model.Comment)
+            </th>
+
+            <th style="color:antiquewhite;">
+                @Html.DisplayNameFor(model => model.Rating)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr style="color:white;">
+            <td style="color:white;">
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td style="color:white;">
+                @Html.DisplayFor(modelItem => item.User)
+            </td>
+            <td style="color:white;">
+                @Html.DisplayFor(modelItem => item.Comment)
+            </td>
+            <td style="color:white;">
+                @for (int i = 0; i < item.Rating; i++)
+                {
+                    <img src="~/Images/whiteStar.png" class="colorStars" style="width: 25px; height: 25px;" />
+                }
+            </td>
+            <td>
+                <button type="submit" data-rate-id="@item.Id" class="btn btn-default js-delete"><a href="#" style="text-decoration:none;">Delete</a></button>
+            </td>
+        </tr>
+        }
+    </tbody>
+
+</table>
+
+@section scripts {
+
+    <script>
+
+        $(document).ready(function () {
+            var table = $("#rateTable").DataTable({ "order": [[0, "desc"]]});
+            $("#rateTable .js-delete").on("click", function () {
+
+                var btn = $(this);
+                bootbox.confirm("Do you want to delete this comment ?", function (res) {
+
+                    if (res) {
+                        $.ajax({
+                            url: "/api/ApiRates/" + btn.attr("data-rate-id"),
+                            method: "DELETE",
+                            success: function () {
+                                table.row(btn.parents("tr")).remove().draw();
+                            }
+                        })
+                    }
+
+                })
+
+            })
+        })
+
+
+
+    </script>
+
+
+
+}
+
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+
+    .colorStars {
+        background: url("/Images/yellowStar.png");
+        background-repeat: no-repeat;
+        background-size: 25px 25px;
+    }
+</style>
